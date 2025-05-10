@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="sl-root marketing-page home index" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0" />
+    <title>Explainable Artificial Intelligence - XAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div id="container" class="container">
+        <header class="global-header fixed">
+            <div class="wrapper">
+                <div class="slides-logo logo-animation">
+                    <a class="symbol" href="/" aria-label="Go to the homepage">
+                        <div class="box-1"></div>
+                        <div class="box-2"></div>
+                        <div class="box-3"></div>
+                    </a>
+                    <a href="/" aria-label="Go to the homepage" style="display: inline-block;
+                        position: relative;
+                        width: 80px;
+                        height: 30px;
+                        top: 12px;
+                        margin: 0 0 0 4px;
+                        vertical-align: top;
+                        background-color: transparent;
+                        background-size: 100%">
+                        <svg> <text x="10%" y="10%" font-size="30" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif">XAI</text></svg>
+                    </a>
+                </div>
+                <div class="nav-wrapper">
+                    <ul class="nav nav-full">
+                        <li class="nav-item hide-in-overlay-menu nav-item-highlighted">
+                            <a class="nav-item-anchor" href="/explain">
+                                <span class="nav-item-label">Try XAI</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main id="main" class="main" role="main">
+            <div class="marquee">
+                <div class="marquee-background">
+                    <canvas class="marquee-canvas"></canvas>
+                </div>
+                <div class="marquee-inner">
+                    <div class="description">
+                        <h1 class="description-title">Upload Your Image</h1>
+                        <h2 class="description-subtitle">See an explanation of how AI makes decisions.</h2>
+                    </div>
+                    <div class="demo">
+                        <div class="demo-content">
+                            <div class="sl-webbrowser translucent">
+                                <div class="sl-webbrowser-header">
+                                    <div class="sl-webbrowser-header-dot"></div>
+                                    <div class="sl-webbrowser-header-dot"></div>
+                                    <div class="sl-webbrowser-header-dot"></div>
+                                </div>
+                                <div class="sl-webbrowser-content">
+                                    <div class="sl-webbrowser-deck" style="padding: 2em; font-size: 1em;">
+                                        <!-- <figure class="marquee-video">
+                                            <img src="{{ url_for('static', filename='slides/slide.jpg') }}" alt="">
+                                        </figure> -->
+                                        <form action="/explain" method="POST" enctype="multipart/form-data">
+                                            <label for="upload-image" style="font-size: 1.2em; font-weight: 500;">Choose Image</label>
+                                            <input type="file" id="upload-image" name="upload-image" accept="image/*" required>
+                                            <button type="submit" class="button primary" style="margin-left: 1em;">
+                                                Upload &amp; Explain
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="scroll-promotion hidden" href="#features" data-scroll-to data-scroll-to-duration="500"
+                    aria-label="Click to read more about what Slides has to offer">
+                    <div class="scroll-promotion-arrow">
+                        <i class="line line-1"></i>
+                        <i class="line line-2"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="swiper-container">
+                <article id="features" class="features swiper-wrapper">
+                    {% if test_image %}
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>AI predicts this is {{label}}</h2>
+                                    <p>With probability is {{prob}}</p>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=test_image) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>The most important feature in the classification is highlighted</h2>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[0]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>The most important feature in the classification is highlighted</h2>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[1]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>Explanation by LIME</h2>
+                                    <p>Features I think help AI make decisions</p>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[2]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>Explanation by Example</h2>
+                                    <p>I think the test image is a {{label}} for the same reasons I think this training example is a {{true_label}}</p>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[3]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>Explanation by Example</h2>
+                                    <p>The most important feature in the classification is highlighted</p>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[4]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    <section class="feature swiper-slide">
+                        <div class="feature-inner">
+                            <div class="feature-content">
+                                <div class="feature-content-inner">
+                                    <h2>Explanation by Example</h2>
+                                    <p>The most important feature in the classification is highlighted</p>
+                                </div>
+                            </div>
+                            <figure class="feature-media">
+                                <img src="{{ url_for('static', filename=result_paths[5]) }}" alt="" style="max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </figure>
+                        </div>
+                    </section>
+                    {% endif %}
+                </article>
+                <div class="clickable-area clickable-area-left"></div>
+                <div class="clickable-area clickable-area-right"></div>
+            </div>
+        </main>
+    </div>
+    <!--! end of #container -->
+    <script src="//assets-v2.slid.es/assets/marketing-c53fa6b3c542fa59a39ad05d7e6c6e152f7fab4824e400e9a89e04955a2ee90f.js" defer="defer"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            allowTouchMove: true,
+            spaceBetween: 30
+        });
+
+        document.querySelector('.clickable-area-left').addEventListener('click', function() {
+            swiper.slidePrev();  // Chuyển sang slide trước đó
+        });
+        document.querySelector('.clickable-area-right').addEventListener('click', function() {
+            swiper.slideNext();  // Chuyển sang slide kế tiếp
+        });
+    </script>
+</body>
+</html>
